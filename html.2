@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Critical System Failure</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: black;
+    color: #ff0000;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    overflow: hidden;
+}
+#screen {
+    padding: 20px;
+    white-space: pre-wrap;
+}
+.flash {
+    animation: flash 0.2s infinite;
+}
+@keyframes flash {
+    0% { color: red; }
+    50% { color: yellow; }
+    100% { color: red; }
+}
+.shake {
+    animation: shake 0.1s infinite;
+}
+@keyframes shake {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(3px, -3px); }
+    50% { transform: translate(-3px, 2px); }
+    75% { transform: translate(3px, 3px); }
+    100% { transform: translate(0, 0); }
+}
+.progress {
+    width: 0%;
+    height: 12px;
+    background: red;
+    margin-top: 4px;
+}
+</style>
+</head>
+
+<body>
+<div id="screen"></div>
+
+<audio id="alarm" loop>
+  <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
+</audio>
+
+<script>
+let lines = [
+"⚠ CRITICAL SYSTEM BREACH DETECTED ⚠",
+"Accessing secure directories...",
+"Bypassing firewall protections...",
+"[ERROR] Unauthorized access level 9 detected!",
+"[WARNING] System integrity compromised!",
+"[ALERT] Encrypted data extraction initiated...",
+"Scanning personal files...",
+"Encrypting device storage...",
+"Uploading data to remote server 185.33.21.9...",
+"--- PROGRESS ---",
+"Initializing data wipe...",
+"Deleting system files...",
+"FORCING DEVICE SHUTDOWN...",
+"Activating fake camera access...",
+"Device vibration initiated...",
+"10...",
+"9...",
+"8...",
+"7...",
+"6...",
+"5...",
+"4...",
+"3...",
+"2...",
+"1...",
+"",
+"😈 THIS IS SAMEER 😈"
+];
+
+let i = 0;
+let screen = document.getElementById("screen");
+
+// Start alarm sound
+let alarm = document.getElementById("alarm");
+alarm.play().catch(()=>{console.log("Autoplay blocked")});
+
+// Fake vibration for mobile
+if(navigator.vibrate){
+    navigator.vibrate([500,200,500,200,500,200,500]);
+}
+
+function typeLine() {
+    if (i < lines.length) {
+
+        // FLASH EFFECT ON TOP WARNING LINES
+        if (i <= 4) { 
+            screen.classList.add("flash"); 
+        }
+
+        // SHAKE EFFECT WHEN BREACH MESSAGE SHOWS
+        if (i == 5) { 
+            screen.classList.add("shake"); 
+        }
+
+        // PROGRESS BAR SECTION
+        if (lines[i] === "--- PROGRESS ---") {
+            let bar = document.createElement("div");
+            bar.className = "progress";
+            screen.appendChild(document.createTextNode("\nUploading..."));
+            screen.appendChild(bar);
+
+            let width = 0;
+            let interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                } else {
+                    width++;
+                    bar.style.width = width + "%";
+                }
+            }, 30);
+        }
+
+        screen.innerHTML += lines[i] + "\n";
+        i++;
+        setTimeout(typeLine, 200);
+    }
+}
+
+typeLine();
+
+</script>
+</body>
+</html>
